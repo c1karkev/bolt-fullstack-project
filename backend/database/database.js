@@ -1,4 +1,4 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 
 // TODO: use .env variables
 const con = mysql.createConnection({
@@ -27,9 +27,12 @@ function setupProductsTable() {
     )`;
     con.query(sql, (err, result) => {
         if (err) throw err;
-        if (result) {
-            console.log(result);
-            console.log("Products table set up was successful");
-        }
+        console.log("Products table set up was successful");
     });
 }
+
+export const getAllProducts = async () => {
+    const [rows] = await con.promise().query("SELECT * FROM products");
+
+    return rows;
+};
