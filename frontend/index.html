@@ -66,11 +66,22 @@
                         <a href=""><i class="bi bi-moon-fill fs-5"></i></a>
                         <a href=""><i class="bi bi-gear-fill fs-5"></i></a>
                     </div>
-                    <a href="#" class="d-flex gap-2">
-                        <img class="img-thumbnail rounded-circle d-block" width="50" src="https://placehold.co/400"
-                            alt="Profile image">
-                        <p class="align-self-center my-0 d-md-none d-lg-block">Profile name</p>
-                    </a>
+                    <div class="position-relative" id="profile">
+                        <a class="d-flex gap-2">
+                            <img class="img-thumbnail rounded-circle d-block" width="50" src="https://placehold.co/400"
+                                alt="Profile image">
+                            <p class="align-self-center my-0 d-md-none d-lg-block">Profile name</p>
+                        </a>
+                        <div id="profileCard" class="position-absolute bg-light-subtle end-0 card my-3"
+                            style="width: 400px;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">Szia, Kevin!</h5>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end">
+                                <button class="btn btn-danger">Kilépés</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,7 +101,7 @@
         <div>
             <div id="productsContainer" class="row">
                 <div class="col-3 mb-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <img src="https://placehold.co/600x400" class="card-img-top" alt="...">
                         <div class="card-body">
                             <div class="position-absolute top-0 start-0 d-flex gap-1 p-2">
@@ -147,12 +158,27 @@
     const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
     const errorToastText = document.getElementById("errorToastText");
 
+    // Profile
+    const profile = document.getElementById("profile");
+    const profileCard = document.getElementById("profileCard");
+    profile.addEventListener("mouseenter", () => profileCard.style.display = "block");
+    profile.addEventListener("mouseleave", () => {
+        setTimeout(() => {
+            if (!profile.matches(":hover")) {
+                profileCard.style.display = "none"
+            }
+        }, 1000);
+    });
+
     loadPage();
 
     async function loadPage() {
         // fetch products from backend
         let products = await fetchProducts();
         console.log(products);
+        products.forEach(p => {
+            productsContainer.innerHTML += generateProductCard(p);
+        });
     }
 
     async function fetchProducts() {
@@ -170,7 +196,24 @@
         return [];
     }
 
-    async function showError(text) {
+    function generateProductCard(product) {
+        return `<div class="col-3 mb-4">
+                    <div class="card h-100">
+                        <img src="https://placehold.co/600x400" class="card-img-top" alt="Product image">
+                        <div class="card-body">
+                            <div class="position-absolute top-0 start-0 d-flex gap-1 p-2">
+                                <span class="badge rounded-pill bg-primary">Termék tag</span>
+                                <span class="badge rounded-pill bg-secondary">Második termék tag</span>
+                            </div>
+                            <h5 class="card-title">${product.name}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">${product.price} Ft</h6>
+                            <a href="#" class="btn btn-primary">További információ</a>
+                        </div>
+                    </div>
+                </div>`
+    }
+
+    function showError(text) {
         errorToastText.innerText = text;
         errorToast.show();
     }
