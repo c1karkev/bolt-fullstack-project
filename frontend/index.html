@@ -20,6 +20,10 @@
         .mainPageHeader {
             height: 300px;
         }
+
+        .search {
+            max-width: 400px;
+        }
     </style>
 </head>
 
@@ -32,7 +36,7 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse gap-3" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -41,18 +45,14 @@
                         <a class="nav-link" href="#">Link</a>
                     </li>
                 </ul>
-                <form class="d-flex mx-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">
-                        Search
+                <form class="d-flex input-group mx-auto flex-shrink-1 search" role="search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-dark" type="submit">
+                        <i class="bi bi-search"></i>
                     </button>
                 </form>
-                <div class="d-flex align-items-center gap-4 justify-content-between">
-                    <a href="#" class="d-flex gap-2">
-                        <img class="img-thumbnail rounded-circle" width="50" src="https://placehold.co/400"
-                            alt="Profile image">
-                        <p class="align-self-center my-0">Profile name</p>
-                    </a>
+                <div
+                    class="d-flex align-items-center gap-4 justify-content-between flex-row-reverse flex-md-row flex-shrink-0">
                     <div class="gap-4 d-flex align-items-center">
                         <a href="#" class="position-relative">
                             <i class="bi bi-basket2-fill fs-5"></i>
@@ -66,6 +66,11 @@
                         <a href=""><i class="bi bi-moon-fill fs-5"></i></a>
                         <a href=""><i class="bi bi-gear-fill fs-5"></i></a>
                     </div>
+                    <a href="#" class="d-flex gap-2">
+                        <img class="img-thumbnail rounded-circle d-block" width="50" src="https://placehold.co/400"
+                            alt="Profile image">
+                        <p class="align-self-center my-0 d-md-none d-lg-block">Profile name</p>
+                    </a>
                 </div>
             </div>
         </div>
@@ -119,10 +124,28 @@
             <p>Copyright 2026 &copy; Kardos Kevin</p>
         </div>
     </footer>
+
+
+    <!-- Error toast -->
+    <div class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 start-50 translate-middle-x m-5"
+        role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span class="fw-bold">Hiba történt!</span>
+                <span id="errorToastText"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
 </body>
 
 <script>
     const productsContainer = document.getElementById("productsContainer");
+
+    // Error toast
+    const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+    const errorToastText = document.getElementById("errorToastText");
 
     loadPage();
 
@@ -142,9 +165,14 @@
             }
         } catch (error) {
             console.log(error);
-            // TODO: show error
+            showError("A termékek betöltése sikertelen volt.");
         }
         return [];
+    }
+
+    async function showError(text) {
+        errorToastText.innerText = text;
+        errorToast.show();
     }
 </script>
 
