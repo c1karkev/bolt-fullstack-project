@@ -17,8 +17,8 @@ router.post("/register", async (req, res) => {
             name,
         );
         const user = db.getUserById(result.insertId);
-        const accessToken = tokens.createAccessToken(user);
-        const refreshToken = tokens.createRefreshToken(user);
+        const accessToken = tokens.createAccessToken(user.id);
+        const refreshToken = tokens.createRefreshToken(user.id);
 
         // send access token as cookie
         res.cookie("refreshToken", refreshToken, {
@@ -44,8 +44,8 @@ router.post("/login", async (req, res) => {
         if (!(await argon2.verify(user.password_hash, password))) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-        const accessToken = tokens.createAccessToken(user);
-        const refreshToken = tokens.createRefreshToken(user);
+        const accessToken = tokens.createAccessToken(user.id);
+        const refreshToken = tokens.createRefreshToken(user.id);
 
         // send access token as cookie
         res.cookie("refreshToken", refreshToken, {
@@ -57,6 +57,21 @@ router.post("/login", async (req, res) => {
         return res.status(200).json({ accessToken });
     } catch (err) {
         return res.status(400).json({ error: err.message });
+    }
+});
+
+router.post("/refresh", (req, res) => {
+    const token = req.cookies.refreshToken;
+
+    if (!token) {
+        return res.status(401).json({ error: "No refresh token" });
+    }
+
+    try {
+        const accessToken = tokens.refreshToken(token);
+        return res.status(200).json({ accessToken });
+    } catch (err) {
+        return res.status(401).json({ error: "Invalid refresh token" });
     }
 });
 
