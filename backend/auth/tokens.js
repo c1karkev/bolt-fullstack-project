@@ -31,9 +31,14 @@ export function createRefreshToken(userId) {
 export function refreshToken(token) {
     try {
         const decoded = jwt.verify(token, "REFRESHSECRET");
-        const accessToken = createAccessToken(decoded.id);
+        const accessToken = createAccessToken(decoded.userId);
         return accessToken;
     } catch (err) {
         throw new Error(err);
     }
+}
+
+export function verifyToken(token) {
+    const payload = jwt.verify(token, "SECRET");
+    return payload;
 }

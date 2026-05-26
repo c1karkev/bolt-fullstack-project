@@ -20,10 +20,10 @@ router.post("/register", async (req, res) => {
         const accessToken = tokens.createAccessToken(user.id);
         const refreshToken = tokens.createRefreshToken(user.id);
 
-        // send access token as cookie
+        // send refresh token as cookie
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: "lax",
             path: "/auth/refresh",
         });
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
         // send access token as cookie
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: "lax",
             path: "/auth/refresh",
         });
