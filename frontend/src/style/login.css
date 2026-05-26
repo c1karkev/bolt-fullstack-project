@@ -1,0 +1,18 @@
+#inputCard {
+    overflow: hidden;
+}
+#inputCardBody {
+    width: 200%;
+    transition: all 0.8s cubic-bezier(0.2, 0.5, 0.25, 1);
+}
+
+#inputCardBody.login {
+    transform: translateX(0);
+}
+#inputCardBody.register {
+    transform: translateX(-50%);
+}
+
+.card-header {
+    user-select: none;
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Local styles-->
+    <link rel="stylesheet" href="src/style/general.css">
+    <link rel="stylesheet" href="src/style/login.css">
+</head>
+
+<body class="min-vh-100">
+    <nav class="navbar navbar-expand-md bg-body-tertiary">
+        <div class="container-md">
+            <a href="/" class="navbar-brand">Webshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse gap-3" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+                <form class="d-flex input-group mx-auto flex-shrink-1 search" role="search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-dark" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+                <div
+                    class="d-flex align-items-center gap-4 justify-content-between flex-row-reverse flex-md-row flex-shrink-0">
+                    <div class="gap-4 d-flex align-items-center">
+                        <a href="#" class="position-relative">
+                            <i class="bi bi-basket2-fill fs-5"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="font-size: 10px;">
+                                99+
+                                <span class="visually-hidden">items</span>
+                            </span>
+                        </a>
+                        <a href=""><i class="bi bi-moon-fill fs-5"></i></a>
+                        <a href=""><i class="bi bi-gear-fill fs-5"></i></a>
+                    </div>
+                    <div class="position-relative" id="profile">
+                        <div class="d-flex gap-2">
+                            <img class="img-thumbnail rounded-circle d-block" width="50" src="https://placehold.co/400"
+                                alt="Profile image">
+                            <p class="align-self-center my-0 d-md-none d-lg-block">Profile name</p>
+                        </div>
+                        <div id="profileCard" class="position-absolute bg-light-subtle end-0 card my-3"
+                            style="width: 400px; display: none;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">Szia, Kevin!</h5>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end">
+                                <button class="btn btn-danger">Kilépés</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-12 col-md-10 col-lg-6">
+                <div class="card" id="inputCard">
+                    <div class="card-header justify-content-center">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="true" id="loginNavButton">Bejelentkezés</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="registerNavButton">Regisztráció</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body login" id="inputCardBody">
+                        <div class="row">
+                            <div id="login" class="col-6 align-content-end">
+                                <form action="">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="loginEmail"
+                                            placeholder="name@example.com">
+                                        <label for="loginEmail">Email cím</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="loginPassword"
+                                            placeholder="Password">
+                                        <label for="loginPassword">Jelszó</label>
+                                    </div>
+                                    <div class="btn btn-primary" id="loginButton">Bejelentkezés</div>
+                                </form>
+                            </div>
+                            <div id="register" class="col-6">
+                                <form action="">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="registerName"
+                                            placeholder="name@example.com">
+                                        <label for="registerName">Név</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="registerEmail"
+                                            placeholder="name@example.com">
+                                        <label for="registerEmail">Email cím</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="registerPassword"
+                                            placeholder="Password">
+                                        <label for="registerPassword">Jelszó</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="registerRepeatPassword"
+                                            placeholder="Password">
+                                        <label for="registerRepeatPassword">Jelszó megismétlése</label>
+                                    </div>
+                                    <div class="btn btn-primary" id="registerButton">Regisztráció</div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="src/javascript/index.js"></script>
+    <script src="src/javascript/login.js"></script>
+</body>
+
+</html>
