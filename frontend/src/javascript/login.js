@@ -40,6 +40,7 @@ loginButton.addEventListener("click", async () => {
                 email: loginEmailInput.value,
                 password: loginPasswordInput.value,
             }),
+            credentials: "include",
         });
         if (!res.ok) {
             //TODO: show error
@@ -70,6 +71,7 @@ registerButton.addEventListener("click", async () => {
                 email: registerEmailInput.value,
                 password: registerPasswordInput.value,
             }),
+            credentials: "include",
         });
         if (!res.ok) {
             //TODO: show error
