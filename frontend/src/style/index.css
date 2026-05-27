@@ -1,3 +1,8 @@
 .mainPageHeader {
     height: 300px;
+    display: flex;
+}
+
+header, section, footer {
+    padding: 2rem;
 }
