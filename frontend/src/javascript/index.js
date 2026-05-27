@@ -11,41 +11,16 @@ const navLoggedOut = document.getElementById("navLoggedOut");
 const mobileProfileNav = document.getElementById("mobileProfileNav");
 const logoutButtons = document.querySelectorAll(".logout");
 
-// Error toast
-const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
-const errorToastText = document.getElementById("errorToastText");
-
-let userData;
-
 // refresh token
 export const loggedIn = await auth.refreshAccessToken();
-console.log(loggedIn);
 
+// show user data in navbar
+let userData;
 if (loggedIn) {
     navLoggedIn.style.display = "block";
     navLoggedOut.style.display = "none";
     // display user info on the navbar
     displayUserInfo();
-    async function displayUserInfo() {
-        if (!userData) {
-            const res = await util.apiFetch(
-                "http://localhost:8000/user/getUser",
-            );
-            const json = await res.json();
-            userData = json;
-        }
-        fillName.forEach((element) => (element.innerText = userData.name));
-        const splitName = userData.name.split(" ");
-        fillLastName.forEach(
-            (element) => (element.innerText = splitName[splitName.length - 1]),
-        );
-        fillEmail.forEach((element) => (element.innerText = userData.email));
-        fillProfileImage.forEach(async (element) => {
-            const emailHash = await util.getSHA256Hash(userData.email);
-            console.log(emailHash);
-            element.src = `https://gravatar.com/avatar/${emailHash}`;
-        });
-    }
     // add click event to logout buttons
     logoutButtons.forEach((e) =>
         e.addEventListener("click", () => auth.logout()),
@@ -54,6 +29,43 @@ if (loggedIn) {
     navLoggedIn.style.display = "none";
     mobileProfileNav.style.display = "none";
 }
+async function displayUserInfo() {
+    if (!userData) {
+        const res = await util.apiFetch("http://localhost:8000/user/getUser");
+        const json = await res.json();
+        userData = json;
+    }
+    fillName.forEach((element) => (element.innerText = userData.name));
+    const splitName = userData.name.split(" ");
+    fillLastName.forEach(
+        (element) => (element.innerText = splitName[splitName.length - 1]),
+    );
+    fillEmail.forEach((element) => (element.innerText = userData.email));
+    fillProfileImage.forEach(async (element) => {
+        const emailHash = await util.getSHA256Hash(userData.email);
+        console.log(emailHash);
+        element.src = `https://gravatar.com/avatar/${emailHash}`;
+    });
+}
+
+// Profile
+const profile = document.getElementById("profile");
+const profileCard = document.getElementById("profileCard");
+profile.addEventListener(
+    "mouseenter",
+    () => (profileCard.style.display = "block"),
+);
+profile.addEventListener("mouseleave", () => {
+    setTimeout(() => {
+        if (!profile.matches(":hover")) {
+            profileCard.style.display = "none";
+        }
+    }, 1000);
+});
+
+// Error toast
+const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+const errorToastText = document.getElementById("errorToastText");
 
 export function showError(text) {
     errorToastText.innerText = text;

@@ -33,3 +33,23 @@ export async function apiFetch(url, options = {}) {
     }
     return res;
 }
+
+export async function fetchAllProducts() {
+    const res = await fetch("http://localhost:8000/products/");
+    if (res.ok) {
+        console.log(res);
+        const data = await res.json();
+        return data;
+    }
+    throw new Error(res.statusText);
+}
+
+export async function fetchProductById(id) {
+    const res = await fetch(`http://localhost:8000/products/${id}`);
+    if (res.ok) {
+        console.log(res);
+        const data = await res.json();
+        return data;
+    }
+    throw new Error(res.statusText);
+}

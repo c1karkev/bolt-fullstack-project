@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hu">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Webshop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -18,7 +18,7 @@
 
     <!-- Local styles-->
     <link rel="stylesheet" href="src/style/general.css">
-    <link rel="stylesheet" href="src/style/index.css">
+    <link rel="stylesheet" href="src/style/product.css">
 </head>
 
 <body>
@@ -107,30 +107,30 @@
         </div>
     </nav>
 
-    <header class="mainPageHeader bg-body-secondary">
-        <div class="container d-flex">
-            <div class="align-self-center">
-                <h1>Kevin webshopja</h1>
-                <p>Itt minden terméket a leges legjobb áron találja meg</p>
-            </div>
-        </div>
-    </header>
-
     <section class="container">
-        <h2>Termékek</h2>
-        <div>
-            <div id="productsContainer" class="row"></div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#"><i
-                                class="bi bi-caret-left-fill"></i></a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="bi bi-caret-right-fill"></i></a></li>
-                </ul>
-            </nav>
+        <div class="row">
+            <div class="col-5">
+                <img src="https://placehold.co/600x400" alt="Termékkép" width="100%">
+            </div>
+            <div class="col-7">
+                <h2>Terméknek a nagyon jó hosszú neve</h2>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci quod aut, ipsa quisquam maiores
+                    sapiente id, nostrum recusandae atque corporis earum architecto omnis magni laudantium, voluptas rem
+                    optio necessitatibus. Repellat libero facilis officiis maxime sit dolor dignissimos consequuntur
+                    animi mollitia repellendus inventore commodi, asperiores distinctio! Voluptatem explicabo eaque sint
+                    temporibus?</p>
+                <div class="d-flex flex-column">
+                    <div class="input-group productCountInput">
+                        <input type="number" class="form-control" value="1" placeholder="1" aria-label="Termékszám"
+                            aria-describedby="cartAddButton" min="1" max="99" id="cartAddCount">
+                        <button class="btn btn-primary" type="button" id="cartAddButton">
+                            <i class="bi bi-cart-plus-fill"></i>
+                            Kosárhoz adás
+                        </button>
+                    </div>
+                    <p class="small d-none" id="cartAmountParagraph">A kosárban: <span id="cartAmount"></span> db</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -154,49 +154,9 @@
                 aria-label="Close"></button>
         </div>
     </div>
+
+    <script type="module" src="src/javascript/index.js"></script>
+    <script type="module" src="src/javascript/product.js"></script>
 </body>
-
-<script type="module" src="src/javascript/index.js"></script>
-<script type="module">
-    import { showError } from "./src/javascript/index.js"
-    import * as util from "./src/javascript/util.js"
-    import * as auth from "./src/javascript/auth.js"
-
-    const productsContainer = document.getElementById("productsContainer");
-
-    loadPage();
-
-    async function loadPage() {
-        // fetch products from backend
-        let products = []
-        try {
-            products = await util.fetchAllProducts();
-        } catch (err) {
-            console.log(err);
-            showError("A termékek betöltése sikertelen volt.");
-        }
-        console.log(products);
-        products.forEach(p => {
-            productsContainer.innerHTML += generateProductCard(p);
-        });
-    }
-
-    function generateProductCard(product) {
-        return `<div class="col-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://placehold.co/600x400" class="card-img-top" alt="Product image">
-                        <div class="card-body">
-                            <div class="position-absolute top-0 start-0 d-flex gap-1 p-2">
-                                <span class="badge rounded-pill bg-primary">Termék tag</span>
-                                <span class="badge rounded-pill bg-secondary">Második termék tag</span>
-                            </div>
-                            <h5 class="card-title">${product.name}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">${product.price} Ft</h6>
-                            <a href="/product.html?id=${product.id}" class="btn btn-primary">További információ</a>
-                        </div>
-                    </div>
-                </div>`
-    }
-</script>
 
 </html>
