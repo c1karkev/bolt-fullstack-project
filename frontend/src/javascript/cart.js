@@ -8,16 +8,16 @@ if (localStorage.getItem("cart")) {
 
 export function setCartItem(id, count) {
     if (count == 0) {
-        delete card[id];
+        delete cart[id];
     } else if (cart[id]) {
-        cart[id] = count;
+        cart[id] = +count;
     } else {
-        cart[id] = count;
+        cart[id] = +count;
     }
     saveCart();
 }
 export function getCartItem(id, count) {
-    return cart[id] || 0;
+    return +cart[id] || 0;
 }
 
 export function getCart() {
