@@ -1,3 +1,35 @@
+/*
+ *
+ * NAVBAR
+ *
+ */
 .search {
     max-width: 400px;
+}
+#profileCard {
+    width: 400px;
+    display: none;
+}
+#mobileProfileNav {
+    display: none;
+}
+nav a > i {
+    transition: color 0.1s;
+    color: var(--bs-highlight-color);
+}
+nav a:hover > i {
+    color: var(--bs-link-color);
+}
+/* md and below */
+@media (max-width: 768px) {
+    .search {
+        max-width: none;
+    }
+    #profileCard, #profileCard * {
+        display: none !important;
+        nav-index: -1;
+    }
+    #mobileProfileNav {
+        display: block;
+    }
 }

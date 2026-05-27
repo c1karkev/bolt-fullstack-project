@@ -18,15 +18,11 @@
 
     <!-- Local styles-->
     <link rel="stylesheet" href="src/style/general.css">
-    <style>
-        .mainPageHeader {
-            height: 300px;
-        }
-    </style>
+    <link rel="stylesheet" href="src/style/index.css">
 </head>
 
 <body class="min-vh-100">
-    <nav class="navbar navbar-expand-md bg-body-tertiary">
+    <nav class="navbar navbar-expand-md sticky-top bg-body-tertiary">
         <div class="container-md">
             <a href="/" class="navbar-brand">Webshop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -35,51 +31,75 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse gap-3" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-md-0 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Főoldal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="/categories.html">Kategóriák</a>
                     </li>
                 </ul>
                 <form class="d-flex input-group mx-auto flex-shrink-1 search" role="search">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                    <input class="form-control" type="search" placeholder="Keresés" aria-label="Keresés" />
                     <button class="btn btn-dark" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
+                <hr class="d-block d-md-none">
                 <div
                     class="d-flex align-items-center gap-4 justify-content-between flex-row-reverse flex-md-row flex-shrink-0">
                     <div class="gap-4 d-flex align-items-center">
-                        <a href="#" class="position-relative">
+                        <a href="/cart.html" class="position-relative">
                             <i class="bi bi-basket2-fill fs-5"></i>
                             <span
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                 style="font-size: 10px;">
                                 99+
-                                <span class="visually-hidden">items</span>
+                                <span class="visually-hidden">elem</span>
                             </span>
                         </a>
-                        <a href=""><i class="bi bi-moon-fill fs-5"></i></a>
-                        <a href=""><i class="bi bi-gear-fill fs-5"></i></a>
+                        <a onclick="toggleDarkMode()"><i class="bi bi-moon-fill fs-5"></i></a>
+                        <a href="/settings.html"><i class="bi bi-gear-fill fs-5"></i></a>
                     </div>
                     <div class="position-relative" id="profile">
-                        <div class="d-flex gap-2">
-                            <img class="img-thumbnail rounded-circle d-block" width="50" src="https://placehold.co/400"
-                                alt="Profile image">
-                            <p class="align-self-center my-0 d-md-none d-lg-block fillName">Profile name</p>
-                        </div>
-                        <div id="profileCard" class="position-absolute bg-light-subtle end-0 card my-3"
-                            style="width: 400px; display: none;">
-                            <div class="card-body">
-                                <h5 class="card-title fw-semibold">Szia, <span class="fillName" />!</h5>
+                        <div id="navLoggedIn" style="display: none;">
+                            <div class="d-flex gap-2">
+                                <img class="img-thumbnail rounded-circle d-block fillProfileImage" src="img/profile.jpg"
+                                    width="40" alt="Profile image">
+                                <p class="align-self-center my-0 d-md-none d-lg-block fillName">Profile name</p>
                             </div>
-                            <div class="card-footer d-flex justify-content-end">
-                                <button class="btn btn-danger">Kilépés</button>
+                            <div id="profileCard" class="position-absolute bg-light-subtle end-0 card my-3">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-semibold mb-0">Szia, <span class="fillLastName" />!</h5>
+                                    <p class="small fillEmail m-0"></p>
+                                    <hr>
+                                    <a href="orders.html">Rendeléseim</a>
+                                </div>
+                                <div class="card-footer d-flex justify-content-end">
+                                    <button class="btn btn-danger">Kilépés</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="navLoggedOut">
+                            <div class="btn-group">
+                                <a class="btn btn-primary" href="/login.html">
+                                    <i class="bi bi-person-fill"></i>
+                                    Bejelentkezés
+                                </a>
+                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">Lenyíló menü megnyitása</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/login.html?mode=register">Regisztráció</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="mobileProfileNav" class="list-group my-2">
+                    <a class="list-group-item w-100" href="/transactions.html">Rendeléseim</a>
+                    <a class="list-group-item list-group-item-danger w-100" href="/logout.html">Kijelentkezés</a>
                 </div>
             </div>
         </div>
