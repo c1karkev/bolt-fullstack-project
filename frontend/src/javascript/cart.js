@@ -12,7 +12,7 @@ export function setCartItem(id, count) {
     } else if (cart[id]) {
         cart[id] = count;
     } else {
-        cart[id] = 1;
+        cart[id] = count;
     }
     saveCart();
 }
