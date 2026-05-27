@@ -14,3 +14,14 @@ export async function refreshAccessToken() {
     accessToken = data.accessToken;
     return true;
 }
+
+export async function logout() {
+    await fetch("http://localhost:8000/auth/logout", {
+        method: "POST",
+        credentials: "include",
+    });
+
+    accessToken = null;
+
+    window.location.href = "/login.html";
+}

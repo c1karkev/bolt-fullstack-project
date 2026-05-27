@@ -1,4 +1,5 @@
 import * as auth from "./auth.js";
+import * as util from "./util.js";
 
 const fillName = document.querySelectorAll(".fillName");
 const fillLastName = document.querySelectorAll(".fillLastName");
@@ -8,6 +9,11 @@ const fillProfileImage = document.querySelectorAll(".fillProfileImage");
 const navLoggedIn = document.getElementById("navLoggedIn");
 const navLoggedOut = document.getElementById("navLoggedOut");
 const mobileProfileNav = document.getElementById("mobileProfileNav");
+const logoutButtons = document.querySelectorAll(".logout");
+
+// Error toast
+const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+const errorToastText = document.getElementById("errorToastText");
 
 let userData;
 
@@ -22,7 +28,9 @@ if (loggedIn) {
     displayUserInfo();
     async function displayUserInfo() {
         if (!userData) {
-            const res = await apiFetch("http://localhost:8000/user/getUser");
+            const res = await util.apiFetch(
+                "http://localhost:8000/user/getUser",
+            );
             const json = await res.json();
             userData = json;
         }
@@ -33,45 +41,21 @@ if (loggedIn) {
         );
         fillEmail.forEach((element) => (element.innerText = userData.email));
         fillProfileImage.forEach(async (element) => {
-            const emailHash = await getSHA256Hash(userData.email);
+            const emailHash = await util.getSHA256Hash(userData.email);
             console.log(emailHash);
             element.src = `https://gravatar.com/avatar/${emailHash}`;
         });
     }
+    // add click event to logout buttons
+    logoutButtons.forEach((e) =>
+        e.addEventListener("click", () => auth.logout()),
+    );
 } else {
     navLoggedIn.style.display = "none";
     mobileProfileNav.style.display = "none";
 }
 
-async function apiFetch(url, options = {}) {
-    let res;
-    if (loggedIn) {
-        // attach access token
-        options.headers = {
-            ...options.headers,
-            Authorization: `Bearer ${auth.accessToken}`,
-        };
-
-        res = await fetch(url, options);
-
-        // if expired
-        if (res.status === 401) {
-            const refreshed = await auth.refreshAccessToken();
-            if (!refreshed) throw new Error("Token refresh failed");
-
-            // retry request
-            options.headers.Authorization = `Bearer ${auth.accessToken}`;
-            res = await fetch(url, options);
-        }
-    } else {
-        res = await fetch(url, options);
-    }
-    return res;
-}
-
-async function getSHA256Hash(message) {
-    const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
-    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgUint8); // hash the message
-    const hashHex = new Uint8Array(hashBuffer).toHex(); // Convert ArrayBuffer to hex string.
-    return hashHex;
+export function showError(text) {
+    errorToastText.innerText = text;
+    errorToast.show();
 }

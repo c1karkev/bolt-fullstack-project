@@ -13,15 +13,8 @@
 #mobileProfileNav {
     display: none;
 }
-nav a > i {
-    transition: color 0.1s;
-    color: var(--bs-highlight-color);
-}
-nav a:hover > i {
-    color: var(--bs-link-color);
-}
 /* md and below */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .search {
         max-width: none;
     }

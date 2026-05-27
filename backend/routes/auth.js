@@ -75,4 +75,15 @@ router.post("/refresh", (req, res) => {
     }
 });
 
+router.post("/logout", (req, res) => {
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/auth/refresh",
+    });
+
+    return res.sendStatus(200);
+});
+
 export default router;
