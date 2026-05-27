@@ -16,6 +16,7 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/products", productsRouter);
+app.use("/static", express.static("static"));
 
 app.listen(PORT, () => {
     console.log(`Webshop backend started on http://localhost:${PORT}/`);
