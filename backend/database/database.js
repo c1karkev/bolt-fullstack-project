@@ -52,6 +52,13 @@ export const getAllProducts = async () => {
     return rows;
 };
 
+export const getProductById = async (id) => {
+    const [rows] = await con
+        .promise()
+        .query("SELECT * FROM products WHERE id = ?", [id]);
+    return rows[0];
+};
+
 export const saveNewUser = async (email, passwordHash, name) => {
     const existing = await getUserByEmail(email);
     if (existing) {
