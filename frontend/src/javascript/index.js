@@ -1,5 +1,6 @@
 import * as auth from "./auth.js";
 import * as util from "./util.js";
+import { cartCount } from "./cart.js";
 
 const fillName = document.querySelectorAll(".fillName");
 const fillLastName = document.querySelectorAll(".fillLastName");
@@ -10,6 +11,8 @@ const navLoggedIn = document.getElementById("navLoggedIn");
 const navLoggedOut = document.getElementById("navLoggedOut");
 const mobileProfileNav = document.getElementById("mobileProfileNav");
 const logoutButtons = document.querySelectorAll(".logout");
+
+const cartBadge = document.getElementById("cartBadge");
 
 // refresh token
 export const loggedIn = await auth.refreshAccessToken();
@@ -62,6 +65,17 @@ profile.addEventListener("mouseleave", () => {
         }
     }, 1000);
 });
+
+// show cart count in navbar
+setNavbarCart(cartCount());
+export function setNavbarCart(count) {
+    if (count == 0) {
+        cartBadge.classList.add("d-none");
+    } else {
+        cartBadge.innerText = count;
+        cartBadge.classList.remove("d-none");
+    }
+}
 
 // Error toast
 const errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
