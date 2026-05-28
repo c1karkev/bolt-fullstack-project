@@ -128,44 +128,60 @@
                     </div>
                     <div class="card-body login" id="inputCardBody">
                         <div class="row">
-                            <div id="login" class="col-6 align-content-end">
-                                <form action="">
+                            <div class="col-6 align-content-end">
+                                <form id="login" class="needsvalidation" novalidate>
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control" id="loginEmail"
-                                            placeholder="name@example.com">
+                                            placeholder="name@example.com" required>
+                                        <div class="invalid-feedback">
+                                            Helyes email címet adjon meg!
+                                        </div>
                                         <label for="loginEmail">Email cím</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="loginPassword"
-                                            placeholder="Password">
+                                            placeholder="Password" required>
                                         <label for="loginPassword">Jelszó</label>
                                     </div>
-                                    <div class="btn btn-primary" id="loginButton">Bejelentkezés</div>
+                                    <button type="submit" class="btn btn-primary"
+                                        id="loginButton">Bejelentkezés</button>
                                 </form>
                             </div>
-                            <div id="register" class="col-6">
-                                <form action="">
+                            <div class="col-6">
+                                <form id="register" class="needsvalidation" novalidate>
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="registerName"
-                                            placeholder="name@example.com">
-                                        <label for="registerName">Név</label>
+                                            placeholder="name@example.com" required>
+                                        <div class="invalid-feedback">
+                                            Adja meg a teljes nevét!
+                                        </div>
+                                        <label for="registerName">Teljes név</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control" id="registerEmail"
-                                            placeholder="name@example.com">
+                                            placeholder="name@example.com" required>
+                                        <div class="invalid-feedback">
+                                            Helyes email címet adjon meg!
+                                        </div>
                                         <label for="registerEmail">Email cím</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="registerPassword"
-                                            placeholder="Password">
+                                            placeholder="Password" required minlength="4">
+                                        <div class="invalid-feedback">
+                                            A jelszónak 4 vagy több karakterből kell állnia
+                                        </div>
                                         <label for="registerPassword">Jelszó</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="registerRepeatPassword"
-                                            placeholder="Password">
+                                            placeholder="Password" required>
                                         <label for="registerRepeatPassword">Jelszó megismétlése</label>
+                                        <div class="invalid-feedback">
+                                            A jelszavaknak egyezniük kell
+                                        </div>
                                     </div>
-                                    <div class="btn btn-primary" id="registerButton">Regisztráció</div>
+                                    <button class="btn btn-primary" id="registerButton">Regisztráció</button>
                                 </form>
                             </div>
                         </div>
@@ -175,9 +191,21 @@
         </div>
     </section>
 
+    <!-- Error toast -->
+    <div class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 start-50 translate-middle-x m-5"
+        role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span class="fw-bold">Hiba történt!</span>
+                <span id="errorToastText"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
 
     <script type="module" src="src/javascript/index.js"></script>
-    <script src="src/javascript/login.js"></script>
+    <script type="module" src="src/javascript/login.js"></script>
 </body>
 
 </html>

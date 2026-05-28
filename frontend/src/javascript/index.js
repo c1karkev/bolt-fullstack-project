@@ -15,7 +15,13 @@ const logoutButtons = document.querySelectorAll(".logout");
 const cartBadge = document.getElementById("cartBadge");
 
 // refresh token
-export const loggedIn = await auth.refreshAccessToken();
+export let loggedIn;
+try {
+    loggedIn = await auth.refreshAccessToken();
+} catch (err) {
+    console.log(err);
+    loggedIn = false;
+}
 
 // show user data in navbar
 let userData;

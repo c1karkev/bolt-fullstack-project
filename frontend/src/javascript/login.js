@@ -1,10 +1,12 @@
+import { showError } from "./index.js";
+
 const loginNavButton = document.getElementById("loginNavButton");
 const registerNavButton = document.getElementById("registerNavButton");
 
 const inputCardBody = document.getElementById("inputCardBody");
 
-const loginContainer = document.getElementById("login");
-const registerContainer = document.getElementById("register");
+const loginForm = document.getElementById("login");
+const registerForm = document.getElementById("register");
 
 const loginButton = document.getElementById("loginButton");
 const loginEmailInput = document.getElementById("loginEmail");
@@ -22,6 +24,24 @@ const registerInputs = document.querySelectorAll(
     "#register input, #register button",
 );
 
+// add event listener to click buttons on enter
+loginInputs.forEach((e) =>
+    e.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            loginButton.click();
+        }
+    }),
+);
+registerInputs.forEach((e) =>
+    e.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            registerButton.click();
+        }
+    }),
+);
+
 loginNavButton.addEventListener("click", () => {
     switchToLogin();
 });
@@ -29,7 +49,14 @@ registerNavButton.addEventListener("click", () => {
     switchToRegister();
 });
 
-loginButton.addEventListener("click", async () => {
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    loginForm.classList.add("was-validated");
+    if (!loginForm.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
     try {
         const res = await fetch("http://localhost:8000/auth/login", {
             method: "POST",
@@ -42,21 +69,29 @@ loginButton.addEventListener("click", async () => {
             }),
             credentials: "include",
         });
+        const data = await res.json();
         if (!res.ok) {
-            //TODO: show error
+            let message = data?.error || res.status;
+            showError("A regisztráció sikertelen volt: " + message);
             console.log(res);
             return;
         }
-        const data = await res.json();
         accessToken = data.accessToken;
         window.location.href = "/";
     } catch (err) {
+        showError(err);
         console.log(err);
     }
 });
-registerButton.addEventListener("click", async () => {
-    if (registerPasswordInput.value !== registerRepeatPasswordInput.value) {
-        // TODO: show error
+registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    validateRegisterPassword();
+
+    registerForm.classList.add("was-validated");
+    if (!registerForm.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
         return;
     }
 
@@ -73,15 +108,17 @@ registerButton.addEventListener("click", async () => {
             }),
             credentials: "include",
         });
+        const data = await res.json();
         if (!res.ok) {
-            //TODO: show error
+            let message = data?.error || res.status;
+            showError("A regisztráció sikertelen volt: " + message);
             console.log(res);
             return;
         }
-        const data = await res.json();
         accessToken = data.accessToken;
         window.location.href = "/";
     } catch (err) {
+        showError(err);
         console.log(err);
     }
 });
@@ -131,3 +168,16 @@ function enableInput(e) {
     e.ariaDisabled = false;
     e.tabIndex = 0;
 }
+
+// register password validation
+function validateRegisterPassword() {
+    if (registerPasswordInput.value != registerRepeatPasswordInput.value) {
+        registerRepeatPasswordInput.setCustomValidity(
+            "A jelszavak nem egyeznek",
+        );
+    } else {
+        registerRepeatPasswordInput.setCustomValidity("");
+    }
+}
+registerPasswordInput.onchange = validateRegisterPassword;
+registerRepeatPasswordInput.onkeyup = validateRegisterPassword;
