@@ -16,7 +16,8 @@ router.post("/register", async (req, res) => {
             await argon2.hash(password),
             name,
         );
-        const user = db.getUserById(result.insertId);
+        const user = await db.getUserById(result.insertId);
+        console.log(`Userid ${user.id}`);
         const accessToken = tokens.createAccessToken(user.id);
         const refreshToken = tokens.createRefreshToken(user.id);
 
