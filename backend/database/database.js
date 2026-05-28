@@ -47,6 +47,21 @@ function setupUsersTable() {
     });
 }
 
+function setupOrdersTable() {
+    let sql = `CREATE TABLE IF NOT EXISTS orders (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        delivery BOOL,
+        deliveryAddress VARCHAR(1023),
+        email VARCHAR(63),
+        phone VARCHAR(31),
+        taxAddress VARCHAR(255)
+    )`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log("Orders table set up was successful");
+    });
+}
+
 export const getAllProducts = async () => {
     const [rows] = await con.promise().query("SELECT * FROM products");
     return rows;
@@ -82,4 +97,17 @@ export const getUserById = async (id) => {
         .promise()
         .query("SELECT * FROM users WHERE id = ?", [id]);
     return rows[0];
+};
+
+export const saveOrder = async (
+    delivery,
+    deliveryAddress,
+    email,
+    phone,
+    taxAddress,
+) => {
+    let sql = `INSERT INTO orders (delivery, deliveryAddress, email, phone, taxAddress) VALUES (?, ?, ?, ?, ?)`;
+    return con
+        .promise()
+        .query(sql, [delivery, deliveryAddress, email, phone, taxAddress]);
 };

@@ -25,4 +25,44 @@ router.get("/getUser", async (req, res) => {
         return res.sendStatus(401);
     }
 });
+
+router.post("/order", async (req, res) => {
+    const { deliveryType, deliveryAddress, email, phone, taxAddress } =
+        req.body;
+
+    // validate deliveryType
+    if (deliveryType !== "homeDelivery" && deliveryType !== "storePickup") {
+        return res.status(400).json({
+            error: "deliveryType must be either homeDelivery or storePickup",
+        });
+    }
+
+    // validate deliveryAddress
+    if ((deliveryType = "homeDelivery")) {
+        if (!deliveryAddress) {
+            return res.status(400).json({
+                error: "deliveryAddress is required for deliveryType = homeDelivery",
+            });
+        }
+    }
+
+    // validate other required info
+    if (!email || !phone || !taxAddress) {
+        return res.status(400).json({
+            error: "email, phone, and taxAddress are required",
+        });
+    }
+
+    try {
+        const [result] = await db.saveOrder(
+            deliveryType == "homeDelivery",
+            deliveryType == "homeDelivery" ? deliveryAddress : null,
+            email,
+            phone,
+            taxAddress,
+        );
+    } catch (err) {
+        console.log(err);
+    }
+});
 export default router;
