@@ -18,6 +18,7 @@ setup();
 function setup() {
     setupProductsTable();
     setupUsersTable();
+    setupOrdersTable();
 }
 
 function setupProductsTable() {
@@ -50,11 +51,11 @@ function setupUsersTable() {
 function setupOrdersTable() {
     let sql = `CREATE TABLE IF NOT EXISTS orders (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        delivery BOOL,
         deliveryAddress VARCHAR(1023),
         email VARCHAR(63),
         phone VARCHAR(31),
-        taxAddress VARCHAR(255)
+        taxAddress VARCHAR(255),
+        items VARCHAR(1023)
     )`;
     con.query(sql, (err, result) => {
         if (err) throw err;
@@ -100,14 +101,14 @@ export const getUserById = async (id) => {
 };
 
 export const saveOrder = async (
-    delivery,
     deliveryAddress,
     email,
     phone,
     taxAddress,
+    items,
 ) => {
-    let sql = `INSERT INTO orders (delivery, deliveryAddress, email, phone, taxAddress) VALUES (?, ?, ?, ?, ?)`;
+    let sql = `INSERT INTO orders (deliveryAddress, email, phone, taxAddress, items) VALUES (?, ?, ?, ?, ?)`;
     return con
         .promise()
-        .query(sql, [delivery, deliveryAddress, email, phone, taxAddress]);
+        .query(sql, [deliveryAddress, email, phone, taxAddress, items]);
 };

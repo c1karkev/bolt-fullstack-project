@@ -53,3 +53,40 @@ export async function fetchProductById(id) {
     }
     throw new Error(res.statusText);
 }
+
+export async function postOrder(
+    deliveryAddress,
+    email,
+    phone,
+    taxAddress,
+    items,
+) {
+    try {
+        const res = await fetch("http://localhost:8000/user/order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                deliveryAddress: deliveryAddress,
+                email: email,
+                phone: phone,
+                taxAddress: taxAddress,
+                items: items,
+            }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(
+                data.error || "Rendelés ismeretlen hibába ütközött",
+            );
+        }
+
+        return data;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}

@@ -24,6 +24,10 @@ export function getCart() {
     return cart;
 }
 
+export function emptyCart() {
+    cart = {};
+}
+
 export function cartCount() {
     return Object.values(cart).reduce((acc, num) => acc + num, 0);
 }

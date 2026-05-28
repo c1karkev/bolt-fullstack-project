@@ -1,11 +1,9 @@
-import { getCart } from "./cart.js";
-import { fetchProductById } from "./util.js";
+import { emptyCart, getCart } from "./cart.js";
+import { showError } from "./index.js";
+import { fetchProductById, postOrder } from "./util.js";
 
 const checkoutForm = document.getElementById("checkoutForm");
 const submitOrderButton = document.getElementById("submitOrder");
-
-const deliveryMethodStore = document.getElementById("deliveryMethodStore");
-const deliveryMethodHome = document.getElementById("deliveryMethodHome");
 
 const shippingAreaCode = document.getElementById("areaCode");
 const shippingCity = document.getElementById("city");
@@ -39,27 +37,59 @@ const summaryFinalPrice = document.getElementById("finalPrice");
 
 validate();
 
-submitOrderButton.addEventListener("click", () => {
+submitOrderButton.addEventListener("click", async () => {
     checkoutForm.classList.add("was-validated");
     if (validate()) {
+        try {
+            let addressList = [
+                shippingAreaCode.value,
+                shippingCity.value,
+                shippingStreet.value,
+                shippingHouseNumber.value,
+                shippingExtra.value,
+            ];
+            let taxAddressList = [
+                receiptAreaCode.value,
+                receiptCity.value,
+                receiptStreet.value,
+                receiptHouseNumber.value,
+            ];
+            await postOrder(
+                addressList.join(";"),
+                email.value,
+                phoneNumber.value,
+                taxAddressList.join(";"),
+                getCart(),
+            );
+            emptyCart();
+            window.location = "/thankyou.html";
+        } catch (err) {
+            console.log(err);
+            showError(err.message);
+        }
     }
 });
 
 function validate() {
-    let isValid = true;
-    console.log("validate");
-
-    // hide shipping address if local pickup
-    // TODO: validation
-    console.log(deliveryMethodHome.checked);
-    if (deliveryMethodHome.checked) {
+    // hide shipping address if local pickup, validate for deliveryAddress
+    /* if (deliveryMethodHome.checked) {
         shippingAddressContainer.classList.remove("d-none");
         addressMatchesReceipt.parentElement.classList.remove("d-none");
     } else {
         shippingAddressContainer.classList.add("d-none");
         addressMatchesReceipt.parentElement.classList.add("d-none");
+        shippingAddressContainer.childNodes.forEach((e) =>
+            e.childNodes.forEach((el) => {
+                console.log(el);
+                try {
+                    el.validity.valid = true;
+                } catch (err) {
+                    console.log(err);
+                }
+            }),
+        );
         addressMatchesReceipt.checked = false;
-    }
+    }*/
 
     // disable and fill receipt address if it matches
     if (addressMatchesReceipt.checked) {
@@ -75,7 +105,7 @@ function validate() {
     // update summary for shipping costs
     updateSummary();
 
-    return isValid;
+    return checkoutForm.checkValidity();
 }
 
 async function updateSummary() {
@@ -89,10 +119,8 @@ async function updateSummary() {
         finalPrice += item.price * value;
     }
 
-    if (deliveryMethodHome.checked) {
-        summaryContainerHTML += getSummaryRow("Szállítás", 1, 5000);
-        finalPrice += 5000;
-    }
+    summaryContainerHTML += getSummaryRow("Szállítás", 1, 5000);
+    finalPrice += 5000;
 
     summaryContainer.innerHTML = summaryContainerHTML;
     summaryFinalPrice.innerText = finalPrice;
