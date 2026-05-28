@@ -1,4 +1,5 @@
 import { showError } from "./index.js";
+import { login, register } from "./auth.js";
 
 const loginNavButton = document.getElementById("loginNavButton");
 const registerNavButton = document.getElementById("registerNavButton");
@@ -58,28 +59,10 @@ loginForm.addEventListener("submit", async (event) => {
         return;
     }
     try {
-        const res = await fetch("http://localhost:8000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: loginEmailInput.value,
-                password: loginPasswordInput.value,
-            }),
-            credentials: "include",
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            let message = data?.error || res.status;
-            showError("A bejelentkezés sikertelen volt: " + message);
-            console.log(res);
-            return;
-        }
-        accessToken = data.accessToken;
+        await login(loginEmailInput.value, loginPasswordInput.value);
         window.location.href = "/";
     } catch (err) {
-        showError(err);
+        showError("A bejelentkezés sikertelen volt: " + err.message);
         console.log(err);
     }
 });
@@ -96,29 +79,14 @@ registerForm.addEventListener("submit", async (event) => {
     }
 
     try {
-        const res = await fetch("http://localhost:8000/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: registerNameInput.value,
-                email: registerEmailInput.value,
-                password: registerPasswordInput.value,
-            }),
-            credentials: "include",
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            let message = data?.error || res.status;
-            showError("A regisztráció sikertelen volt: " + message);
-            console.log(res);
-            return;
-        }
-        accessToken = data.accessToken;
+        await register(
+            registerNameInput.value,
+            registerEmailInput.value,
+            registerPasswordInput.value,
+        );
         window.location.href = "/";
     } catch (err) {
-        showError(err);
+        showError("A regisztráció sikertelen volt: " + err.message);
         console.log(err);
     }
 });
