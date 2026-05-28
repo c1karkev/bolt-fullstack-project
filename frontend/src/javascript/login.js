@@ -72,7 +72,7 @@ loginForm.addEventListener("submit", async (event) => {
         const data = await res.json();
         if (!res.ok) {
             let message = data?.error || res.status;
-            showError("A regisztráció sikertelen volt: " + message);
+            showError("A bejelentkezés sikertelen volt: " + message);
             console.log(res);
             return;
         }
