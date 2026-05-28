@@ -113,25 +113,109 @@
     </nav>
 
     <section class="container">
-        <h1>Kosár tartalma</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Termék megnevezése</th>
-                        <th>Darabszám</th>
-                        <th>Ár</th>
-                    </tr>
-                </thead>
-                <tbody id="cartContainer" class="table-group-divider"></tbody>
-            </table>
-        </div>
-        <div class="">
-            <p>Végösszeg: <span id="priceSum"></span> Ft</p>
-            <a class="btn btn-primary" href="./checkout.html">
-                <i class="bi bi-cart-check-fill"></i>
-                Vásárlás
-            </a>
+        <h1>Kassza</h1>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <form class="form needsvalidation" id="checkoutForm" novalidate>
+                    <div>
+                        <h3>Átvételi mód</h3>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryMethod" id="deliveryMethodStore"
+                                required>
+                            <label class="form-check-label" for="deliveryMethodStore">
+                                Áruházi átvétel
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryMethod" id="deliveryMethodHome"
+                                required>
+                            <label class="form-check-label" for="deliveryMethodHome">
+                                Házhoz szállítás (+5000 Ft)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="shippingAddress">
+                        <h3>Szállítási cím</h3>
+                        <div class="col-5 col-sm-4 col-xl-2">
+                            <label for="areaCode" class="form-label">Irányítószám</label>
+                            <input type="text" class="form-control" id="areaCode" required>
+                        </div>
+                        <div class="col-7 col-sm-8 col-xl-3">
+                            <label for="city" class="form-label">Település</label>
+                            <input type="text" class="form-control" id="city" required>
+                        </div>
+                        <div class="col-9 col-xl-5">
+                            <label for="street" class="form-label">Utca</label>
+                            <input type="text" class="form-control" id="street" required>
+                        </div>
+                        <div class="col-3 col-xl-2">
+                            <label for="houseNumber" class="form-label">Házszám</label>
+                            <input type="text" class="form-control" id="houseNumber" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="additionalAddress" class="form-label">Egyéb információ (nem kötelező)</label>
+                            <textarea class="form-control" id="additionalAddress"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <h3>Kapcsolati adatok</h3>
+                        <div>
+                            <label for="email" class="form-label">E-mail cím</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div>
+                            <label for="phoneNumber" class="form-label">Telefonszám</label>
+                            <input type="tel" class="form-control" id="phoneNumber" required>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="receiptAddressContainer">
+                        <h3>Számlázasi cím</h3>
+                        <div class="form-check ms-3">
+                            <input class="form-check-input" type="checkbox" id="addressMatchesReceipt">
+                            <label class="form-check-label" for="addressMatchesReceipt">
+                                Megegyezik a szállítási címmel
+                            </label>
+                        </div>
+                        <div class="col-5 col-sm-4 col-xl-2">
+                            <label for="areaCodeReceipt" class="form-label">Irányítószám</label>
+                            <input type="text" class="form-control" id="areaCodeReceipt" required>
+                        </div>
+                        <div class="col-7 col-sm-8 col-xl-3">
+                            <label for="cityReceipt" class="form-label">Település</label>
+                            <input type="text" class="form-control" id="cityReceipt" required>
+                        </div>
+                        <div class="col-9 col-xl-5">
+                            <label for="streetReceipt" class="form-label">Utca</label>
+                            <input type="text" class="form-control" id="streetReceipt" required>
+                        </div>
+                        <div class="col-3 col-xl-2">
+                            <label for="houseNumberReceipt" class="form-label">Házszám</label>
+                            <input type="text" class="form-control" id="houseNumberReceipt" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-lg-5 mt-5 mt-lg-0">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Összegzés</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody id="summaryContainer">
+                            </tbody>
+                            <tfoot class="table-group-divider">
+                                <tr class="table-active">
+                                    <td colspan="2">Végösszeg</td>
+                                    <td><span id="finalPrice"></span> Ft</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <button class="btn btn-primary" id="submitOrder">Rendelés leadása</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -157,62 +241,7 @@
     </div>
 
     <script type="module" src="src/javascript/index.js"></script>
-    <script type="module">
-        import * as cart from "./src/javascript/cart.js";
-        import { fetchProductById } from "./src/javascript/util.js"
-
-        const cartContainer = document.getElementById("cartContainer");
-        const priceSum = document.getElementById("priceSum");
-
-        const cartItems = {};
-        for (const [key, value] of Object.entries(cart.getCart())) {
-            const item = await fetchProductById(key)
-            item.count = value;
-            cartItems[key] = item;
-        }
-
-        drawTable();
-
-        function drawTable() {
-            cartContainer.innerHTML = "";
-            let sum = 0;
-            for (const [key, value] of Object.entries(cartItems)) {
-                cartContainer.innerHTML += createItemRow(key, value.name, value.price, value.count)
-                sum += value.count * value.price;
-            }
-            priceSum.innerText = sum;
-        }
-
-        function createItemRow(id, name, price, count) {
-            let priceStr = `${price * count} Ft`
-            if (count > 1) {
-                priceStr += ` (${+price} Ft/db)`;
-            }
-            return `<tr class="cartItem">
-                        <td><a href='/product.html?id="${id}"'>${name}</a></td>
-                        <td><input type="number" class="form-control form-control-sm w-auto d-inline" value=${count} min="1" max="99" onchange="updateCount(${id}, this.value)"> db</td>
-                        <td>${priceStr}</td>
-                        <td><button class="btn btn-sm btn-danger" onclick="remove(${id})"><i class="bi bi-trash3-fill"></i></button></td>
-                    </tr>`
-        }
-
-        function updateCount(id, count) {
-            if (count <= 0) count = 1;
-            if (count >= 100) count = 99
-            cart.setCartItem(id, count);
-            cartItems[id].count = count;
-            drawTable();
-        }
-
-        function remove(id) {
-            cart.setCartItem(id, 0);
-            delete cartItems[id];
-            drawTable();
-        }
-
-        window.updateCount = updateCount;
-        window.remove = remove;
-    </script>
+    <script type="module" src="src/javascript/checkout.js"></script>
 </body>
 
 </html>
