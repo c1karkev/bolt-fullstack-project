@@ -123,14 +123,15 @@
                         <th>Ár</th>
                     </tr>
                 </thead>
-                <tbody id="cartContainer" class="table-group-divider">
-                    <tr>
-                        <td>Valami termék</td>
-                        <td><input type="number" class="form-control form-control-sm w-auto d-inline"> db</td>
-                        <td><button class="btn btn-sm btn-danger"><i class="bi bi-trash3-fill"></i></button></td>
-                    </tr>
-                </tbody>
+                <tbody id="cartContainer" class="table-group-divider"></tbody>
             </table>
+        </div>
+        <div class="">
+            <p>Végösszeg: <span id="priceSum"></span> Ft</p>
+            <button class="btn btn-primary">
+                <i class="bi bi-cart-check-fill"></i>
+                Vásárlás
+            </button>
         </div>
     </section>
 
@@ -161,6 +162,7 @@
         import { fetchProductById } from "./src/javascript/util.js"
 
         const cartContainer = document.getElementById("cartContainer");
+        const priceSum = document.getElementById("priceSum");
 
         const cartItems = {};
         for (const [key, value] of Object.entries(cart.getCart())) {
@@ -173,9 +175,12 @@
 
         function drawTable() {
             cartContainer.innerHTML = "";
+            let sum = 0;
             for (const [key, value] of Object.entries(cartItems)) {
                 cartContainer.innerHTML += createItemRow(key, value.name, value.price, value.count)
+                sum += value.count * value.price;
             }
+            priceSum.innerText = sum;
         }
 
         function createItemRow(id, name, price, count) {
