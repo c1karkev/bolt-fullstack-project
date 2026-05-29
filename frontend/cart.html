@@ -180,13 +180,13 @@
                 cartContainer.innerHTML += createItemRow(key, value.name, value.price, value.count)
                 sum += value.count * value.price;
             }
-            priceSum.innerText = sum;
+            priceSum.innerText = sum.toLocaleString();
         }
 
         function createItemRow(id, name, price, count) {
             let priceStr = `${price * count} Ft`
             if (count > 1) {
-                priceStr += ` (${+price} Ft/db)`;
+                priceStr += ` (${(+price).toLocaleString()} Ft/db)`;
             }
             return `<tr class="cartItem">
                         <td><a href='/product.html?id="${id}"'>${name}</a></td>

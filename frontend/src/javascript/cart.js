@@ -26,6 +26,7 @@ export function getCart() {
 
 export function emptyCart() {
     cart = {};
+    saveCart();
 }
 
 export function cartCount() {

@@ -123,12 +123,12 @@ async function updateSummary() {
     finalPrice += 5000;
 
     summaryContainer.innerHTML = summaryContainerHTML;
-    summaryFinalPrice.innerText = finalPrice;
+    summaryFinalPrice.innerText = finalPrice.toLocaleString();
 }
 function getSummaryRow(name, amount, price) {
     return `<tr>
                 <td>${name}</td>
                 <td>${amount > 1 ? "x" + amount : ""}</td>
-                <td>${price * amount} Ft</td>
+                <td>${(price * amount).toLocaleString()} Ft</td>
             </tr>`;
 }
